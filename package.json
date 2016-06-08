@@ -1,0 +1,19 @@
+{
+  "name": "embest",
+  "version": "1.0.0",
+  "description": "Embest is a Customer Relationship Management system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janoveoyen/embest.git"
+  },
+  "author": "Jan Ove Øyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janoveoyen/embest/issues"
+  },
+  "homepage": "https://github.com/janoveoyen/embest#readme"
+}
