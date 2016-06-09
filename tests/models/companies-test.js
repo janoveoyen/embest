@@ -11,9 +11,9 @@ var resetTests = function() {
   testCompany = {
     orgNumber: 999888777,
     name: "Testfirma AS",
-    phone: 99887766/*,
+    phone: 99887766,
     email: "post@testfirma.as",
-    mailingAddress: "Portveien 2, 0123 Oslo",
+    mailingAddress: "Portveien 2, 0123 Oslo"/*,
     contact: {
       name: "Ola Nordmann",
       email: "ola.nordmann@testfirma.as",
@@ -93,18 +93,42 @@ describe('Companies', function() {
 
       it('should return false if bad company.email exists', function() {
 
-            testCompany.email = undefined
-            expect(companies.addCompany(testCompany)).to.equal(true)
+        testCompany.email = undefined
+        expect(companies.addCompany(testCompany)).to.equal(true)
 
-            testCompany.email = null
-            expect(companies.addCompany(testCompany)).to.equal(true)
+        testCompany.email = null
+        expect(companies.addCompany(testCompany)).to.equal(true)
 
-            testCompany.email = ""
-            expect(companies.addCompany(testCompany)).to.equal(false)
+        testCompany.email = ""
+        expect(companies.addCompany(testCompany)).to.equal(false)
 
-            testCompany.email = "bad email"
-            expect(companies.addCompany(testCompany)).to.equal(false)
+        testCompany.email = "bad email"
+        expect(companies.addCompany(testCompany)).to.equal(false)
 
+        testCompany.email = "ola@nordmann.as"
+        expect(companies.addCompany(testCompany)).to.equal(true)
+
+      })
+
+      it ('should return false if bad mailingAddress exists', function() {
+
+        testCompany.mailingAddress = undefined
+        expect(companies.addCompany(testCompany)).to.equal(true)
+
+        testCompany.mailingAddress = null
+        expect(companies.addCompany(testCompany)).to.equal(true)
+
+        testCompany.mailingAddress = ""
+        expect(companies.addCompany(testCompany)).to.equal(false)
+
+        testCompany.mailingAddress = "1234"
+        expect(companies.addCompany(testCompany)).to.equal(false)
+
+        testCompany.mailingAddress = "ola@nordmann.as"
+        expect(companies.addCompany(testCompany)).to.equal(false)
+
+        testCompany.mailingAddress = "Portveien 2, 0123 Oslo"
+        expect(companies.addCompany(testCompany)).to.equal(true)
       })
 
     })

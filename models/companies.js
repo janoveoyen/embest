@@ -19,7 +19,18 @@ Companies.prototype.addCompany = function(company) {
         (typeof company.email !== 'undefined' && company.email !== null)
         && (!validator.isEmail(company.email + ""))
        )
-  )
+    || ( //if mailingAddress exists then it must be string with content
+          (
+            (typeof company.mailingAddress !== 'undefined')
+            && company.mailingAddress !== null
+          )
+          && (
+               company.mailingAddress === ""
+               || validator.isEmail(company.mailingAddress)
+               || validator.isInt(company.mailingAddress)
+             )
+       )
+    )
   {
     return false;
   }
