@@ -49,25 +49,36 @@ var isEmailValidIfPresent = function(email) {
   return true
 }
 
+var isMailingAddressValidIfPresent = function(mailingAddress) {
+  //if mailingAddress exists then it must be string with content
+  if (
+        (
+          (typeof mailingAddress !== 'undefined')
+          && mailingAddress !== null
+        )
+        &&
+        (
+          mailingAddress === ""
+          || validator.isEmail(mailingAddress)
+          || validator.isInt(mailingAddress)
+        )
+     )
+     {
+       return false
+     }
+
+     return true
+}
+
 Companies.prototype.addCompany = function(company) {
   //validate input
   if (
        !company
-    || !isOrgNumberValid(company.orgNumber)
-    || !isCompanyNameValid(company.name)
-    || !isPhoneValidIfPresent(company.phone)
-    || !isEmailValidIfPresent(company.email)
-    || ( //if mailingAddress exists then it must be string with content
-          (
-            (typeof company.mailingAddress !== 'undefined')
-            && company.mailingAddress !== null
-          )
-          && (
-               company.mailingAddress === ""
-               || validator.isEmail(company.mailingAddress)
-               || validator.isInt(company.mailingAddress)
-             )
-       )
+       || !isOrgNumberValid(company.orgNumber)
+       || !isCompanyNameValid(company.name)
+       || !isPhoneValidIfPresent(company.phone)
+       || !isEmailValidIfPresent(company.email)
+       || !isMailingAddressValidIfPresent(company.mailingAddress)
     )
   {
     return false;
