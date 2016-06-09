@@ -12,11 +12,11 @@ Companies.prototype.addCompany = function(company) {
     || company.orgNumber.toString().length != 9
     || !company.name
     || !(typeof company.name === 'string')
-  ) {
+  )
+  {
     return false;
   }
 
-  return true
 };
 
 module.exports = Companies;

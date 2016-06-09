@@ -31,9 +31,6 @@ describe('Companies', function() {
 /*--------------------------------------------------------------------------*/
 
 //test validation
-  it('addCompany() should return true on valid company passed', function() {
-    expect(companies.addCompany(testCompany)).to.equal(true)
-  })
 
   it('addCompany() should return false on no company', function() {
     expect(companies.addCompany()).to.equal(false)
