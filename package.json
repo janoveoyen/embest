@@ -4,7 +4,7 @@
   "description": "Embest is a Customer Relationship Management system",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests --recursive --watch",
     "dev": "nodemon app.js"
   },
   "repository": {
