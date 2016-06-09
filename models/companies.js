@@ -23,16 +23,27 @@ var isCompanyNameValid = function(name) {
   return true;
 }
 
+var isPhoneValid = function(phone) {
+  //if phone exists then it must be int
+  if
+  (
+    (typeof phone !== 'undefined' && phone !== null)
+    && !validator.isInt(phone + "")
+  )
+  {
+    return false;
+  }
+
+  return true;
+}
+
 Companies.prototype.addCompany = function(company) {
   //validate input
   if (
        !company
     || !isOrgNumberValid(company.orgNumber)
     || !isCompanyNameValid(company.name)
-    || ( //if phone exists then it must be int
-        (typeof company.phone !== 'undefined' && company.phone !== null)
-        && (!validator.isInt(company.phone + ""))
-       )
+    || !isPhoneValid(company.phone)
     || (  //if email exists then it must be valid address
         (typeof company.email !== 'undefined' && company.email !== null)
         && (!validator.isEmail(company.email + ""))
