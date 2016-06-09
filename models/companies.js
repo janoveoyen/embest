@@ -2,13 +2,25 @@ function Companies() { }
 
 var validator = require('validator');
 
+var isOrgNumberValid = function(orgNumber) {
+  if
+  (
+    !orgNumber
+    || !validator.isInt(orgNumber + "")
+    || orgNumber.toString().length != 9
+  )
+  {
+    return false;
+  }
+
+  return true;
+}
+
 Companies.prototype.addCompany = function(company) {
   //validate input
   if (
        !company
-    || !company.orgNumber
-    || !validator.isInt(company.orgNumber + "")
-    || company.orgNumber.toString().length != 9
+    || !isOrgNumberValid(company.orgNumber)
     || !company.name
     || !(typeof company.name === 'string')
     || ( //if phone exists then it must be int
