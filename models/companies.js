@@ -23,7 +23,7 @@ var isCompanyNameValid = function(name) {
   return true;
 }
 
-var isPhoneValid = function(phone) {
+var isPhoneValidIfPresent = function(phone) {
   //if phone exists then it must be int
   if
   (
@@ -31,10 +31,22 @@ var isPhoneValid = function(phone) {
     && !validator.isInt(phone + "")
   )
   {
-    return false;
+    return false
   }
 
-  return true;
+  return true
+}
+
+var isEmailValidIfPresent = function(email) {
+  if (
+       (typeof email !== 'undefined' && email !== null)
+       && (!validator.isEmail(email + ""))
+     )
+     {
+       return false
+     }
+
+  return true
 }
 
 Companies.prototype.addCompany = function(company) {
@@ -43,11 +55,8 @@ Companies.prototype.addCompany = function(company) {
        !company
     || !isOrgNumberValid(company.orgNumber)
     || !isCompanyNameValid(company.name)
-    || !isPhoneValid(company.phone)
-    || (  //if email exists then it must be valid address
-        (typeof company.email !== 'undefined' && company.email !== null)
-        && (!validator.isEmail(company.email + ""))
-       )
+    || !isPhoneValidIfPresent(company.phone)
+    || !isEmailValidIfPresent(company.email)
     || ( //if mailingAddress exists then it must be string with content
           (
             (typeof company.mailingAddress !== 'undefined')
