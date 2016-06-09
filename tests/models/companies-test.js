@@ -1,9 +1,9 @@
-var chai = require('chai');
-var expect = chai.expect;
-var Companies = require('./../../models/companies');
+var chai = require('chai')
+var expect = chai.expect
+var Companies = require('./../../models/companies')
 
-var companies;
-var testCompany;
+var companies
+var testCompany
 
 
 describe('Companies', function() {
@@ -32,24 +32,38 @@ describe('Companies', function() {
 
 //test validation
   it('addCompany() should return true on valid company passed', function() {
-    expect(companies.addCompany(testCompany)).to.equal(true);
+    expect(companies.addCompany(testCompany)).to.equal(true)
   })
 
   it('addCompany() should return false on no company', function() {
-    expect(companies.addCompany()).to.equal(false);
-    expect(companies.addCompany("")).to.equal(false);
-    expect(companies.addCompany(undefined)).to.equal(false);
+    expect(companies.addCompany()).to.equal(false)
+    expect(companies.addCompany("")).to.equal(false)
+    expect(companies.addCompany(undefined)).to.equal(false)
   })
 
-  it('addCompany() should return false if bad company.orgnr', function() {
-    testCompany.orgNumber = null;
-    expect(companies.addCompany(testCompany)).to.equal(false);
-    testCompany.orgNumber = "bad orgnr";
-    expect(companies.addCompany(testCompany)).to.equal(false);
-    testCompany.orgNumber = 1234;
-    expect(companies.addCompany(testCompany)).to.equal(false);
-    testCompany.orgNumber = 1.3456789;
-    expect(companies.addCompany(testCompany)).to.equal(false);
+  it('addCompany() should return false if bad company.orgNumber', function() {
+    testCompany.orgNumber = null
+    expect(companies.addCompany(testCompany)).to.equal(false)
+
+    testCompany.orgNumber = "bad orgnr"
+    expect(companies.addCompany(testCompany)).to.equal(false)
+
+    testCompany.orgNumber = 1234
+    expect(companies.addCompany(testCompany)).to.equal(false)
+
+    testCompany.orgNumber = 1.3456789
+    expect(companies.addCompany(testCompany)).to.equal(false)
   })
 
-});
+  it('addCompany() should return false if bad company.name', function() {
+    testCompany.name = null
+    expect(companies.addCompany(testCompany)).to.equal(false)
+
+    testCompany.name = 1234
+    expect(companies.addCompany(testCompany)).to.equal(false)
+
+    testCompany.name = ""
+    expect(companies.addCompany(testCompany)).to.equal(false)
+  })
+
+})
