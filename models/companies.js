@@ -16,13 +16,19 @@ var isOrgNumberValid = function(orgNumber) {
   return true;
 }
 
+var isCompanyNameValid = function(name) {
+  if ( !name || !(typeof name === 'string') ){
+    return false;
+  }
+  return true;
+}
+
 Companies.prototype.addCompany = function(company) {
   //validate input
   if (
        !company
     || !isOrgNumberValid(company.orgNumber)
-    || !company.name
-    || !(typeof company.name === 'string')
+    || !isCompanyNameValid(company.name)
     || ( //if phone exists then it must be int
         (typeof company.phone !== 'undefined' && company.phone !== null)
         && (!validator.isInt(company.phone + ""))
