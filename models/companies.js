@@ -1,5 +1,7 @@
 function Companies() { }
 
+const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt.'
+
 var validator = require('validator');
 
 var isOrgNumberValid = function(orgNumber) {
@@ -81,7 +83,7 @@ Companies.prototype.addCompany = function(company) {
        || !isMailingAddressValidIfPresent(company.mailingAddress)
     )
   {
-    throw new Error('Ugyldig firmainformasjon oppgitt.');
+    throw new Error(badCompanyErrorMsg);
   }
 
   return true;
