@@ -8,8 +8,9 @@ var isOrgNumberValid = function(orgNumber) {
   if
   (
     !orgNumber
-    || !validator.isInt(orgNumber + "")
-    || orgNumber.toString().length != 9
+    || !(typeof orgNumber === "string")
+    || !validator.isInt(orgNumber)
+    || orgNumber.length != 9
   )
   {
     return false;
@@ -26,11 +27,11 @@ var isCompanyNameValid = function(name) {
 }
 
 var isPhoneValidIfPresent = function(phone) {
-  //if phone exists then it must be int
+  //if phone exists then it must be int-string
   if
   (
-    (typeof phone !== 'undefined' && phone !== null)
-    && !validator.isInt(phone + "")
+    ( typeof phone !== 'undefined' && phone !== null )
+    && ( (typeof phone !== "string") || !validator.isInt(phone) )
   )
   {
     return false
