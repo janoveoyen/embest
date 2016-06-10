@@ -81,7 +81,7 @@ Companies.prototype.addCompany = function(company) {
        || !isMailingAddressValidIfPresent(company.mailingAddress)
     )
   {
-    return false;
+    throw new Error('Ugyldig firmainformasjon oppgitt.');
   }
 
   return true;
