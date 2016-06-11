@@ -1,9 +1,10 @@
 function Companies() { }
 
-const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt.'
+const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt'
 
 var validator = require('validator');
 
+/* orgNumber should be a numeric string with excactly 9 digits */
 var isOrgNumberValid = function(orgNumber) {
   if
   (
@@ -19,6 +20,7 @@ var isOrgNumberValid = function(orgNumber) {
   return true;
 }
 
+/* company name should be a string */
 var isCompanyNameValid = function(name) {
   if ( !name || !(typeof name === 'string') ){
     return false;
@@ -26,8 +28,26 @@ var isCompanyNameValid = function(name) {
   return true;
 }
 
+/* salesPerson should be "Firstname Lastname" with minimum 2 letters in each */
+var isSalesPersonValid = function(salesPerson) {
+  if
+    (
+      !salesPerson
+      || !(typeof salesPerson === 'string')
+      || salesPerson.length <= 4
+      || salesPerson.indexOf(" ") == -1
+      || validator.isInt(salesPerson)
+    )
+  {
+      return false;
+  }
+
+  return true;
+}
+
+/* if phone is not blank then it should be a numeric string */
 var isPhoneValidIfPresent = function(phone) {
-  //if phone exists then it must be int-string
+
   if
   (
     ( typeof phone !== 'undefined' && phone !== null )
@@ -40,6 +60,7 @@ var isPhoneValidIfPresent = function(phone) {
   return true
 }
 
+/* if email is not blank then it should be a valid email address */
 var isEmailValidIfPresent = function(email) {
   if (
        (typeof email !== 'undefined' && email !== null)
@@ -52,8 +73,9 @@ var isEmailValidIfPresent = function(email) {
   return true
 }
 
+/* if mailingAddress is not blank then
+   it should be a non-numeric non-email string */
 var isMailingAddressValidIfPresent = function(mailingAddress) {
-  //if mailingAddress exists then it must be string with content
   if (
         (
           (typeof mailingAddress !== 'undefined')
@@ -79,6 +101,7 @@ Companies.prototype.addCompany = function(company) {
        !company
        || !isOrgNumberValid(company.orgNumber)
        || !isCompanyNameValid(company.name)
+       || !isSalesPersonValid(company.salesPerson)
        || !isPhoneValidIfPresent(company.phone)
        || !isEmailValidIfPresent(company.email)
        || !isMailingAddressValidIfPresent(company.mailingAddress)

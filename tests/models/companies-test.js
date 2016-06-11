@@ -5,7 +5,7 @@ var Companies = require('./../../models/companies')
 var companies
 var testCompany
 
-const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt."
+const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt"
 
 var resetTests = function() {
   companies = new Companies();
@@ -13,14 +13,10 @@ var resetTests = function() {
   testCompany = {
     orgNumber: "999888777",
     name: "Testfirma AS",
+    salesPerson: "Ola Testselger",
     phone: "99887766",
     email: "post@testfirma.as",
-    mailingAddress: "Portveien 2, 0123 Oslo"/*,
-    contact: {
-      name: "Ola Nordmann",
-      email: "ola.nordmann@testfirma.as",
-      phone: "44332211"
-    }*/
+    mailingAddress: "Portveien 2, 0123 Oslo"
   }
 }
 
@@ -85,6 +81,36 @@ describe('Companies', function() {
           .to.throw(badCompanyErrorMsg)
 
         testCompany.name = "Testfirma AS"
+        expect(companies.addCompany(testCompany))
+          .to.equal(true)
+      })
+
+      it('should throw error if bad company.salesPerson', function() {
+        testCompany.salesPerson = null
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.throw(badCompanyErrorMsg)
+
+        testCompany.salesPerson = undefined
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.throw(badCompanyErrorMsg)
+
+        testCompany.salesPerson = 1234
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.throw(badCompanyErrorMsg)
+
+        testCompany.salesPerson = ""
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.throw(badCompanyErrorMsg)
+
+        testCompany.salesPerson = "abcd"
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.throw(badCompanyErrorMsg)
+
+        testCompany.salesPerson = "abcde"
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.throw(badCompanyErrorMsg)
+
+        testCompany.salesPerson = "Ola Testselger"
         expect(companies.addCompany(testCompany))
           .to.equal(true)
       })
