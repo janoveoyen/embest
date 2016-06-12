@@ -1,8 +1,10 @@
-function Companies() { }
+var Db = require('./../helpers/database')
+var Validator = require('validator');
 
+const collection = 'companies';
 const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt'
 
-var validator = require('validator');
+function Companies() { }
 
 /* orgNumber should be a numeric string with excactly 9 digits */
 var isOrgNumberValid = function(orgNumber) {
@@ -10,7 +12,7 @@ var isOrgNumberValid = function(orgNumber) {
   (
     !orgNumber
     || !(typeof orgNumber === "string")
-    || !validator.isInt(orgNumber)
+    || !Validator.isInt(orgNumber)
     || orgNumber.length != 9
   )
   {
@@ -36,7 +38,7 @@ var isSalesPersonValid = function(salesPerson) {
       || !(typeof salesPerson === 'string')
       || salesPerson.length <= 4
       || salesPerson.indexOf(" ") == -1
-      || validator.isInt(salesPerson)
+      || Validator.isInt(salesPerson)
     )
   {
       return false;
@@ -51,7 +53,7 @@ var isPhoneValidIfPresent = function(phone) {
   if
   (
     ( typeof phone !== 'undefined' && phone !== null )
-    && ( (typeof phone !== "string") || !validator.isInt(phone) )
+    && ( (typeof phone !== "string") || !Validator.isInt(phone) )
   )
   {
     return false
@@ -64,7 +66,7 @@ var isPhoneValidIfPresent = function(phone) {
 var isEmailValidIfPresent = function(email) {
   if (
        (typeof email !== 'undefined' && email !== null)
-       && (!validator.isEmail(email + ""))
+       && (!Validator.isEmail(email + ""))
      )
      {
        return false
@@ -84,8 +86,8 @@ var isMailingAddressValidIfPresent = function(mailingAddress) {
         &&
         (
           mailingAddress === ""
-          || validator.isEmail(mailingAddress)
-          || validator.isInt(mailingAddress)
+          || Validator.isEmail(mailingAddress)
+          || Validator.isInt(mailingAddress)
         )
      )
      {
@@ -95,7 +97,7 @@ var isMailingAddressValidIfPresent = function(mailingAddress) {
      return true
 }
 
-Companies.prototype.addCompany = function(company) {
+Companies.prototype.addCompany = function(company, done) {
   //validate input
   if (
        !company
@@ -110,7 +112,7 @@ Companies.prototype.addCompany = function(company) {
     throw new Error(badCompanyErrorMsg);
   }
 
-  return true;
+  Db.insertOne(collection, company, done);
 
 };
 

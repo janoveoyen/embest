@@ -1,6 +1,9 @@
 var chai = require('chai')
 var expect = chai.expect
+var sinon = require('sinon');
+
 var Companies = require('./../../models/companies')
+var Db = require('./../../helpers/database')
 
 var companies
 var testCompany
@@ -26,9 +29,9 @@ describe('Companies', function() {
         resetTests();
   })
 
-/*--------------------------------------------------------------------------*/
-/*------------------------ addCompany tests --------------------------------*/
-/*--------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*------------------------ addCompany tests ---------------------------------*/
+/*---------------------------------------------------------------------------*/
   describe("addCompany()", function() {
 
     describe("Validation", function() {
@@ -61,10 +64,6 @@ describe('Companies', function() {
         expect(companies.addCompany.bind(companies, testCompany))
           .to.throw(badCompanyErrorMsg)
 
-        testCompany.orgNumber = "999888777"
-        expect(companies.addCompany(testCompany))
-          .to.equal(true)
-
       })
 
       it('should throw error if bad company.name', function() {
@@ -80,9 +79,6 @@ describe('Companies', function() {
         expect(companies.addCompany.bind(companies, testCompany))
           .to.throw(badCompanyErrorMsg)
 
-        testCompany.name = "Testfirma AS"
-        expect(companies.addCompany(testCompany))
-          .to.equal(true)
       })
 
       it('should throw error if bad company.salesPerson', function() {
@@ -110,19 +106,17 @@ describe('Companies', function() {
         expect(companies.addCompany.bind(companies, testCompany))
           .to.throw(badCompanyErrorMsg)
 
-        testCompany.salesPerson = "Ola Testselger"
-        expect(companies.addCompany(testCompany))
-          .to.equal(true)
       })
 
       it('should throw error if bad company.phone exists', function() {
 
         testCompany.phone = null
-        expect(companies.addCompany(testCompany))
-          .to.equal(true)
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.not.throw(badCompanyErrorMsg)
 
         testCompany.phone = undefined
-        expect(companies.addCompany(testCompany)).to.equal(true)
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.not.throw(badCompanyErrorMsg)
 
         testCompany.phone = ""
         expect(companies.addCompany.bind(companies, testCompany))
@@ -136,18 +130,17 @@ describe('Companies', function() {
         expect(companies.addCompany.bind(companies, testCompany))
           .to.throw(badCompanyErrorMsg)
 
-        testCompany.phone = "99887766"
-        expect(companies.addCompany(testCompany))
-          .to.equal(true)
       })
 
       it('should throw error if bad company.email exists', function() {
 
         testCompany.email = undefined
-        expect(companies.addCompany(testCompany)).to.equal(true)
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.not.throw(badCompanyErrorMsg)
 
         testCompany.email = null
-        expect(companies.addCompany(testCompany)).to.equal(true)
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.not.throw(badCompanyErrorMsg)
 
         testCompany.email = ""
         expect(companies.addCompany.bind(companies, testCompany))
@@ -157,18 +150,17 @@ describe('Companies', function() {
         expect(companies.addCompany.bind(companies, testCompany))
           .to.throw(badCompanyErrorMsg)
 
-        testCompany.email = "ola@nordmann.as"
-        expect(companies.addCompany(testCompany)).to.equal(true)
-
       })
 
       it ('should throw error if bad mailingAddress exists', function() {
 
         testCompany.mailingAddress = undefined
-        expect(companies.addCompany(testCompany)).to.equal(true)
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.not.throw(badCompanyErrorMsg)
 
         testCompany.mailingAddress = null
-        expect(companies.addCompany(testCompany)).to.equal(true)
+        expect(companies.addCompany.bind(companies, testCompany))
+          .to.not.throw(badCompanyErrorMsg)
 
         testCompany.mailingAddress = ""
         expect(companies.addCompany.bind(companies, testCompany))
@@ -182,8 +174,46 @@ describe('Companies', function() {
         expect(companies.addCompany.bind(companies, testCompany))
           .to.throw(badCompanyErrorMsg)
 
-        testCompany.mailingAddress = "Portveien 2, 0123 Oslo"
-        expect(companies.addCompany(testCompany)).to.equal(true)
+      })
+
+    })
+
+    describe("Adding company", function() {
+
+      beforeEach(function() {
+        sinon.stub(Db, 'insertOne', function(collection, document, done) {
+          setTimeout(function() {
+            done({
+              collection: collection,
+              company: document
+            })
+          }, 0)
+        })
+      })
+
+      afterEach(function() {
+        Db.insertOne.restore();
+      });
+
+      it("Should save the correct company to the correct collection"
+        , function(done) {
+
+          var newTestCompany = {
+              orgNumber: "999777888",
+              name: "Testfirma 2 AS",
+              salesPerson: "Kari Testselger",
+              phone: "99776622",
+              email: "post2@testfirma.as",
+              mailingAddress: "Portveien 3, 0123 Oslo"
+            }
+
+        companies.addCompany(newTestCompany, function(result) {
+          expect(result.collection).to.equal("companies")
+          expect(result.company).to.equal(newTestCompany)
+
+          done()
+        })
+
       })
 
     })
