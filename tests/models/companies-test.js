@@ -1,14 +1,15 @@
-var chai = require('chai')
-var expect = chai.expect
+var Chai = require('chai')
+var expect = Chai.expect
 var sinon = require('sinon');
-
 var Companies = require('./../../models/companies')
 var Db = require('./../../helpers/database')
+
+
+const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt"
 
 var companies
 var testCompany
 
-const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt"
 
 var resetTests = function() {
   companies = new Companies();
@@ -216,8 +217,17 @@ describe('Companies', function() {
 
       })
 
-    })
+      it("Should return Error when inserting existing company (by orgNr)"
+        , function(done) {
 
-  })
+          companies.addCompany(testCompany, function(expectedError, data) {
+            expect(expectedError).to.be.an.instanceof(Error);
+            done();
+          })
+        })
+
+      })
+
+    })
 
 })
