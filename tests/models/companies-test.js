@@ -4,7 +4,6 @@ var sinon = require('sinon');
 var Companies = require('./../../models/companies')
 var Db = require('./../../helpers/database')
 
-
 const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt"
 
 var companies
@@ -181,23 +180,21 @@ describe('Companies', function() {
 
     describe("Adding company", function() {
 
-      beforeEach(function() {
-        sinon.stub(Db, 'insertOne', function(collection, document, done) {
-          setTimeout(function() {
-            done({
-              collection: collection,
-              company: document
-            })
-          }, 0)
-        })
-      })
-
       afterEach(function() {
-        Db.insertOne.restore();
+
       });
 
       it("Should save the correct company to the correct collection"
         , function(done) {
+
+          sinon.stub(Db, 'insertOne', function(collection, document, done) {
+            setTimeout(function() {
+              done(null, {
+                collection: collection,
+                company: document
+              })
+            }, 0)
+          })
 
           var newTestCompany = {
               orgNumber: "999777888",
@@ -208,22 +205,38 @@ describe('Companies', function() {
               mailingAddress: "Portveien 3, 0123 Oslo"
             }
 
-        companies.addCompany(newTestCompany, function(result) {
-          expect(result.collection).to.equal("companies")
-          expect(result.company).to.equal(newTestCompany)
+        companies.addCompany(newTestCompany, function(err, result) {
+          expect(err).to.be.null
+          expect(result.success).to.be.true;
+          expect(Db.insertOne.getCall().args[0]).to.equal("companies")
+          expect(Db.insertOne.getCall().args[1]).to.equal(newTestCompany)
 
+          Db.insertOne.restore();
           done()
         })
 
       })
 
-      it("Should return Error when inserting existing company (by orgNr)"
+      it("Should return success=false on inserting existing company (by orgNr)"
         , function(done) {
 
-          companies.addCompany(testCompany, function(expectedError, data) {
-            expect(expectedError).to.be.an.instanceof(Error);
-            done();
+          sinon.stub(Db, 'insertOne', function(collection, document, done) {
+            setTimeout(function() {
+              done({
+                  "index" : 0,
+                  "code" : 11000,
+                  "errmsg" : "E11000 duplicate key error collection",
+                  "op" : { "_id" : 123456789 }
+                })
+            }, 0)
           })
+
+          companies.addCompany(testCompany, function(err, result) {
+            expect(err).to.be.null
+            expect(result.success).to.be.false;
+            done()
+          })
+
         })
 
       })

@@ -112,7 +112,9 @@ Companies.prototype.addCompany = function(company, done) {
     throw new Error(badCompanyErrorMsg);
   }
 
-  Db.insertOne(collection, company, done);
+  Db.insertOne(collection, company, function(err, result) {
+    done(null, {success: true})
+  })
 
 };
 
