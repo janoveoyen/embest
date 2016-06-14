@@ -1,13 +1,14 @@
-var Chai = require('chai')
-var expect = Chai.expect
+var Chai = require('chai');
+var expect = Chai.expect;
 var sinon = require('sinon');
-var Companies = require('./../../models/companies')
-var Db = require('./../../helpers/database')
+var Companies = require('./../../models/companies');
+var Db = require('./../../helpers/database');
 
-const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt"
+const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt";
+const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
 
-var companies
-var testCompany
+var companies;
+var testCompany;
 
 
 var resetTests = function() {
@@ -37,142 +38,146 @@ describe('Companies', function() {
     describe("Validation", function() {
 
       it('should throw error if no company', function() {
-        expect(companies.addCompany.bind(companies)).to.throw(badCompanyErrorMsg)
-        expect(companies.addCompany.bind(companies, "")).to.throw(badCompanyErrorMsg)
-        expect(companies.addCompany.bind(companies, undefined)).throw(badCompanyErrorMsg)
-        expect(companies.addCompany.bind(companies, null)).throw(badCompanyErrorMsg)
+        expect(companies.addCompany.bind(companies))
+          .to.throw(badCompanyErrorMsg);
+        expect(companies.addCompany.bind(companies, ""))
+          .to.throw(badCompanyErrorMsg);
+        expect(companies.addCompany.bind(companies, undefined))
+          .to.throw(badCompanyErrorMsg);
+        expect(companies.addCompany.bind(companies, null))
+          .to.throw(badCompanyErrorMsg);
       })
 
       it('should throw error if bad company.orgNumber', function() {
-        testCompany.orgNumber = null
+        testCompany.orgNumber = null;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.orgNumber = "bad orgnr"
+        testCompany.orgNumber = "bad orgnr";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.orgNumber = "1234"
+        testCompany.orgNumber = "1234";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.orgNumber = 1234
+        testCompany.orgNumber = 1234;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.orgNumber = "1.3456789"
+        testCompany.orgNumber = "1.3456789";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
       })
 
       it('should throw error if bad company.name', function() {
-        testCompany.name = null
+        testCompany.name = null;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.name = 1234
+        testCompany.name = 1234;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.name = ""
+        testCompany.name = "";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
       })
 
       it('should throw error if bad company.salesPerson', function() {
-        testCompany.salesPerson = null
+        testCompany.salesPerson = null;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.salesPerson = undefined
+        testCompany.salesPerson = undefined;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.salesPerson = 1234
+        testCompany.salesPerson = 1234;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.salesPerson = ""
+        testCompany.salesPerson = "";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.salesPerson = "abcd"
+        testCompany.salesPerson = "abcd";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.salesPerson = "abcde"
+        testCompany.salesPerson = "abcde";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
       })
 
       it('should throw error if bad company.phone exists', function() {
 
-        testCompany.phone = null
+        testCompany.phone = null;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg)
+          .to.not.throw(badCompanyErrorMsg);
 
-        testCompany.phone = undefined
+        testCompany.phone = undefined;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg)
+          .to.not.throw(badCompanyErrorMsg);
 
-        testCompany.phone = ""
+        testCompany.phone = "";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.phone = "bad phone number"
+        testCompany.phone = "bad phone number";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.phone = 99887766
+        testCompany.phone = 99887766;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
       })
 
       it('should throw error if bad company.email exists', function() {
 
-        testCompany.email = undefined
+        testCompany.email = undefined;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg)
+          .to.not.throw(badCompanyErrorMsg);
 
-        testCompany.email = null
+        testCompany.email = null;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg)
+          .to.not.throw(badCompanyErrorMsg);
 
-        testCompany.email = ""
+        testCompany.email = "";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.email = "bad email"
+        testCompany.email = "bad email";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
       })
 
       it ('should throw error if bad mailingAddress exists', function() {
 
-        testCompany.mailingAddress = undefined
+        testCompany.mailingAddress = undefined;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg)
+          .to.not.throw(badCompanyErrorMsg);
 
-        testCompany.mailingAddress = null
+        testCompany.mailingAddress = null;
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg)
+          .to.not.throw(badCompanyErrorMsg);
 
-        testCompany.mailingAddress = ""
+        testCompany.mailingAddress = "";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.mailingAddress = "1234"
+        testCompany.mailingAddress = "1234";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
-        testCompany.mailingAddress = "ola@nordmann.as"
+        testCompany.mailingAddress = "ola@nordmann.as";
         expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg)
+          .to.throw(badCompanyErrorMsg);
 
       })
 
@@ -182,7 +187,7 @@ describe('Companies', function() {
 
       afterEach(function() {
 
-      });
+      })
 
       it("Should save the correct company to the correct collection"
         , function(done) {
@@ -193,7 +198,7 @@ describe('Companies', function() {
                 collection: collection,
                 company: document
               })
-            }, 0)
+            }, 0);
           })
 
           var newTestCompany = {
@@ -206,18 +211,17 @@ describe('Companies', function() {
             }
 
         companies.addCompany(newTestCompany, function(err, result) {
-          expect(err).to.be.null
-          expect(result.success).to.be.true;
-          expect(Db.insertOne.getCall().args[0]).to.equal("companies")
-          expect(Db.insertOne.getCall().args[1]).to.equal(newTestCompany)
+          expect(err).to.be.null;
+          expect(Db.insertOne.getCall(0).args[0]).to.equal("companies")
+          expect(Db.insertOne.getCall(0).args[1]).to.equal(newTestCompany)
 
-          Db.insertOne.restore();
+          Db.insertOne.restore()
           done()
         })
 
       })
 
-      it("Should return success=false on inserting existing company (by orgNr)"
+      it("Should return error on inserting existing company (by orgNr)"
         , function(done) {
 
           sinon.stub(Db, 'insertOne', function(collection, document, done) {
@@ -232,8 +236,10 @@ describe('Companies', function() {
           })
 
           companies.addCompany(testCompany, function(err, result) {
-            expect(err).to.be.null
-            expect(result.success).to.be.false;
+            expect(err).to.be.instanceof(Error);
+            expect(err.message).to.equal(companyAlreadyExistsErrorMsg)
+
+            Db.insertOne.restore()
             done()
           })
 

@@ -2,7 +2,8 @@ var Db = require('./../helpers/database')
 var Validator = require('validator');
 
 const collection = 'companies';
-const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt'
+const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt';
+const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
 
 function Companies() { }
 
@@ -113,7 +114,12 @@ Companies.prototype.addCompany = function(company, done) {
   }
 
   Db.insertOne(collection, company, function(err, result) {
-    done(null, {success: true})
+    if (err) {
+      return done(new Error(companyAlreadyExistsErrorMsg));
+    }
+
+    return done(null)
+
   })
 
 };
