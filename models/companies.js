@@ -110,7 +110,7 @@ Companies.prototype.addCompany = function(company, done) {
        || !isMailingAddressValidIfPresent(company.mailingAddress)
     )
   {
-    throw new Error(badCompanyErrorMsg);
+    return done(new Error(badCompanyErrorMsg));
   }
 
   Db.insertOne(collection, company, function(err, result) {

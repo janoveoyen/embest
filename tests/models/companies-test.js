@@ -10,7 +10,6 @@ const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
 var companies;
 var testCompany;
 
-
 var resetTests = function() {
   companies = new Companies();
 
@@ -22,6 +21,12 @@ var resetTests = function() {
     email: "post@testfirma.as",
     mailingAddress: "Portveien 2, 0123 Oslo"
   }
+}
+
+var expectBadCompanyError = function(err) {
+    expect(err).to.be.instanceof(Error);
+    expect(err.message).to.equal(badCompanyErrorMsg);
+    done();
 }
 
 describe('Companies', function() {
@@ -37,157 +42,224 @@ describe('Companies', function() {
 
     describe("Validation", function() {
 
-      it('should throw error if no company', function() {
-        expect(companies.addCompany.bind(companies))
-          .to.throw(badCompanyErrorMsg);
-        expect(companies.addCompany.bind(companies, ""))
-          .to.throw(badCompanyErrorMsg);
-        expect(companies.addCompany.bind(companies, undefined))
-          .to.throw(badCompanyErrorMsg);
-        expect(companies.addCompany.bind(companies, null))
-          .to.throw(badCompanyErrorMsg);
-      })
+      it('should return Error if no company', function(done) {
 
-      it('should throw error if bad company.orgNumber', function() {
+        companies.addCompany(null, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
+
+        companies.addCompany("", function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
+
+        companies.addCompany(undefined, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
+
+        done();
+      });
+
+      it('should return Error if bad company.orgNumber', function(done) {
         testCompany.orgNumber = null;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+      });
 
         testCompany.orgNumber = "bad orgnr";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.orgNumber = "1234";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.orgNumber = 1234;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.orgNumber = "1.3456789";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
-      })
+        done();
+      });
 
-      it('should throw error if bad company.name', function() {
+      it('should return Error if bad company.name', function(done) {
         testCompany.name = null;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.name = 1234;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.name = "";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
-      })
+        done();
+      });
 
-      it('should throw error if bad company.salesPerson', function() {
+      it('should return Error if bad company.salesPerson', function(done) {
         testCompany.salesPerson = null;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.salesPerson = undefined;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.salesPerson = 1234;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.salesPerson = "";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.salesPerson = "abcd";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.salesPerson = "abcde";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
-      })
+        done();
+      });
 
-      it('should throw error if bad company.phone exists', function() {
+      it('should return Error if bad company.phone exists', function(done) {
 
         testCompany.phone = null;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.phone = undefined;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+            expect(err).to.be.instanceof(Error);
+            expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.phone = "";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.phone = "bad phone number";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.phone = 99887766;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
-      })
+        done();
+      });
 
-      it('should throw error if bad company.email exists', function() {
+      it('should return Error if bad company.email exists', function(done) {
 
         testCompany.email = undefined;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.email = null;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.email = "";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.email = "bad email";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
-      })
+        done();
+      });
 
-      it ('should throw error if bad mailingAddress exists', function() {
+      it ('should return Error if bad mailingAddress exists', function(done) {
 
         testCompany.mailingAddress = undefined;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.mailingAddress = null;
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.not.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.mailingAddress = "";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.mailingAddress = "1234";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
         testCompany.mailingAddress = "ola@nordmann.as";
-        expect(companies.addCompany.bind(companies, testCompany))
-          .to.throw(badCompanyErrorMsg);
+        companies.addCompany(testCompany, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(badCompanyErrorMsg);
+        });
 
-      })
+        done();
+      });
 
-    })
+    });
 
     describe("Adding company", function() {
-
-      afterEach(function() {
-
-      })
 
       it("Should save the correct company to the correct collection"
         , function(done) {
@@ -235,7 +307,7 @@ describe('Companies', function() {
             }, 0)
           })
 
-          companies.addCompany(testCompany, function(err, result) {
+          companies.addCompany(testCompany, function(err) {
             expect(err).to.be.instanceof(Error);
             expect(err.message).to.equal(companyAlreadyExistsErrorMsg)
 
