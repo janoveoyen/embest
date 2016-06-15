@@ -6,11 +6,12 @@ var Db = require('./../../helpers/database');
 
 const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt";
 const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
+const noSearchStringErrorMsg = "Ugyldig søkefrase oppgitt";
 
 var companies;
 var testCompany;
 
-var resetTests = function() {
+var resetTestCompany = function() {
   companies = new Companies();
 
   testCompany = {
@@ -32,7 +33,7 @@ var expectBadCompanyError = function(err) {
 describe('Companies', function() {
 
   beforeEach(function() {
-        resetTests();
+        resetTestCompany();
   })
 
 /*---------------------------------------------------------------------------*/
@@ -321,4 +322,35 @@ describe('Companies', function() {
 
     })
 
-})
+  /*---------------------------------------------------------------------------*/
+  /*------------------------ getCompany tests ---------------------------------*/
+  /*---------------------------------------------------------------------------*/
+  describe("getCompanies()", function() {
+
+    describe("Validation", function() {
+
+      it('should return Error if no search string', function(done) {
+
+        companies.getCompanies(null, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(noSearchStringErrorMsg);
+        });
+
+        companies.getCompanies("", function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(noSearchStringErrorMsg);
+        });
+
+        companies.getCompanies(undefined, function(err) {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal(noSearchStringErrorMsg);
+        });
+
+        done();
+      });
+
+    });
+
+  });
+
+});

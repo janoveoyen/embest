@@ -4,6 +4,7 @@ var Validator = require('validator');
 const collection = 'companies';
 const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt';
 const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
+const noSearchStringErrorMsg = "Ugyldig søkefrase oppgitt";
 
 function Companies() { }
 
@@ -114,6 +115,7 @@ Companies.prototype.addCompany = function(company, done) {
   }
 
   Db.insertOne(collection, company, function(err, result) {
+
     if (err) {
       return done(new Error(companyAlreadyExistsErrorMsg));
     }
@@ -123,5 +125,10 @@ Companies.prototype.addCompany = function(company, done) {
   })
 
 };
+
+Companies.prototype.getCompanies = function(searchString, done) {
+
+  done(new Error(noSearchStringErrorMsg));
+}
 
 module.exports = Companies;
