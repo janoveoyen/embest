@@ -349,6 +349,30 @@ describe('Companies', function() {
         done();
       });
 
+      it("Should return null if no match found"
+        , function(done) {
+
+          sinon.stub(Db, 'insertOne', function(collection, document, done) {
+            setTimeout(function() {
+              done({
+                  // "index" : 0,
+                  // "code" : 11000,
+                  // "errmsg" : "E11000 duplicate key error collection",
+                  // "op" : { "_id" : 123456789 }
+                })
+            }, 0)
+          })
+
+          // companies.addCompany(testCompany, function(err) {
+          //   expect(err).to.be.instanceof(Error);
+          //   expect(err.message).to.equal(companyAlreadyExistsErrorMsg)
+          //
+          //   Db.insertOne.restore()
+            done()
+          // })
+
+        })
+
     });
 
   });
