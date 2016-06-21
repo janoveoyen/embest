@@ -8,12 +8,18 @@ const noSearchStringErrorMsg = "Ugyldig søkefrase oppgitt";
 
 function Companies() { }
 
+var isString = function(param) {
+  if (!param  || !(typeof param === "string")) {
+    return false;
+  }
+  return true;
+}
+
 /* orgNumber should be a numeric string with excactly 9 digits */
 var isOrgNumberValid = function(orgNumber) {
   if
   (
-    !orgNumber
-    || !(typeof orgNumber === "string")
+    !isString(orgNumber)
     || !Validator.isInt(orgNumber)
     || orgNumber.length != 9
   )
@@ -26,18 +32,14 @@ var isOrgNumberValid = function(orgNumber) {
 
 /* company name should be a string */
 var isCompanyNameValid = function(name) {
-  if ( !name || !(typeof name === 'string') ){
-    return false;
-  }
-  return true;
+  return isString(name);
 }
 
 /* salesPerson should be "Firstname Lastname" with minimum 2 letters in each */
 var isSalesPersonValid = function(salesPerson) {
   if
     (
-      !salesPerson
-      || !(typeof salesPerson === 'string')
+      !isString(salesPerson)
       || salesPerson.length <= 4
       || salesPerson.indexOf(" ") == -1
       || Validator.isInt(salesPerson)
@@ -55,7 +57,7 @@ var isPhoneValidIfPresent = function(phone) {
   if
   (
     ( typeof phone !== 'undefined' && phone !== null )
-    && ( (typeof phone !== "string") || !Validator.isInt(phone) )
+    && ( !isString(phone) || !Validator.isInt(phone) )
   )
   {
     return false
@@ -120,7 +122,7 @@ Companies.prototype.addCompany = function(company, done) {
       return done(new Error(companyAlreadyExistsErrorMsg));
     }
 
-    return done(null)
+    return done(null);
 
   })
 
@@ -128,7 +130,12 @@ Companies.prototype.addCompany = function(company, done) {
 
 Companies.prototype.getCompanies = function(searchString, done) {
 
-  done(new Error(noSearchStringErrorMsg));
+  if ( !isString(searchString) ) {
+    return done(new Error(noSearchStringErrorMsg));
+  }
+
+  return done(null, false);
+
 }
 
 module.exports = Companies;
