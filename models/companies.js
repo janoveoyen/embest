@@ -134,7 +134,9 @@ Companies.prototype.findByName = function(searchString, done) {
     return done(new Error(noSearchStringErrorMsg));
   }
 
-  return done(null, false);
+  Db.find(collection, {name: searchString}, function(err, result) {
+    return done(err, result);
+  })
 
 }
 

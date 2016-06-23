@@ -36,9 +36,6 @@ describe('Companies', function() {
         resetTestCompany();
   })
 
-/*---------------------------------------------------------------------------*/
-/*------------------------ addCompany tests ---------------------------------*/
-/*---------------------------------------------------------------------------*/
   describe("addCompany()", function() {
 
     describe("Validation", function() {
@@ -322,9 +319,6 @@ describe('Companies', function() {
 
     })
 
-  /*---------------------------------------------------------------------------*/
-  /*------------------------ getCompany tests ---------------------------------*/
-  /*---------------------------------------------------------------------------*/
   describe("findByName()", function() {
 
     it('should return Error if no search string', function(done) {
@@ -347,24 +341,41 @@ describe('Companies', function() {
       done();
     });
 
-    it("Should return falsy value if no match found"
-      , function(done) {
+    it("Should return falsy value if no match found", function(done) {
 
-        sinon.stub(Db, 'find', function(done) {
-          setTimeout(function() {
-            done({})
-          }, 0)
+      var find = sinon.stub(Db, 'find', function(collection, projection, done) {
+        setTimeout(function() {
+          done(null, []);
+        }, 0)
+      })
+
+      companies.findByName("not a name", function(err, result) {
+        expect(err).to.equal(null);
+        expect(result.length).to.equal(0);
+        sinon.assert.calledWith(find, "companies", {name: "not a name"});
+        Db.find.restore();
+        done()
+      })
+
+    })
+
+    it("Should return correct company on match", function(done) {
+
+      var find = sinon.stub(Db, 'find', function(collection, projection, done) {
+        setTimeout(function() {
+          done(null, [testCompany])
+        }, 0)
+      })
+
+        companies.findByName("Testfirma AS", function(err, result) {
+          expect(err).to.equal(null);
+          sinon.assert.calledWith(find, "companies", {name: "Testfirma AS"});
+          expect(result[0]).to.equal(testCompany);
+          Db.find.restore();
+          done()
         })
 
-         companies.findByName("not a company name", function(err, result) {
-           expect(err).to.equal(null);
-           expect(result).to.be.false;
-
-           Db.find.restore();
-           done()
-         })
-
-      })
+    })
 
   });
 
