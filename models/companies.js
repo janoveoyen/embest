@@ -128,7 +128,7 @@ Companies.prototype.addCompany = function(company, done) {
 
 };
 
-Companies.prototype.getCompanies = function(searchString, done) {
+Companies.prototype.findByName = function(searchString, done) {
 
   if ( !isString(searchString) ) {
     return done(new Error(noSearchStringErrorMsg));

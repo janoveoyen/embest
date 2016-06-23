@@ -331,17 +331,17 @@ describe('Companies', function() {
 
       it('should return Error if no search string', function(done) {
 
-        companies.getCompanies(null, function(err) {
+        companies.findByName(null, function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(noSearchStringErrorMsg);
         });
 
-        companies.getCompanies("", function(err) {
+        companies.findByName("", function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(noSearchStringErrorMsg);
         });
 
-        companies.getCompanies(undefined, function(err) {
+        companies.findByName(undefined, function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(noSearchStringErrorMsg);
         });
@@ -358,7 +358,7 @@ describe('Companies', function() {
             }, 0)
           })
 
-           companies.getCompanies("non existing company name", function(err, result) {
+           companies.findByName("non existing company name", function(err, result) {
              expect(err).to.equal(null);
           //   expect(err.message).to.equal(companyAlreadyExistsErrorMsg)
 
