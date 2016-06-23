@@ -325,50 +325,46 @@ describe('Companies', function() {
   /*---------------------------------------------------------------------------*/
   /*------------------------ getCompany tests ---------------------------------*/
   /*---------------------------------------------------------------------------*/
-  describe("getCompanies()", function() {
+  describe("findByName()", function() {
 
-    describe("Validation", function() {
+    it('should return Error if no search string', function(done) {
 
-      it('should return Error if no search string', function(done) {
-
-        companies.findByName(null, function(err) {
-          expect(err).to.be.instanceof(Error);
-          expect(err.message).to.equal(noSearchStringErrorMsg);
-        });
-
-        companies.findByName("", function(err) {
-          expect(err).to.be.instanceof(Error);
-          expect(err.message).to.equal(noSearchStringErrorMsg);
-        });
-
-        companies.findByName(undefined, function(err) {
-          expect(err).to.be.instanceof(Error);
-          expect(err.message).to.equal(noSearchStringErrorMsg);
-        });
-
-        done();
+      companies.findByName(null, function(err) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
       });
 
-      it("Should return null if no match found"
-        , function(done) {
+      companies.findByName("", function(err) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+      });
 
-          sinon.stub(Db, 'find', function(searchString, done) {
-            setTimeout(function() {
-              done({})
-            }, 0)
-          })
+      companies.findByName(undefined, function(err) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+      });
 
-           companies.findByName("non existing company name", function(err, result) {
-             expect(err).to.equal(null);
-          //   expect(err.message).to.equal(companyAlreadyExistsErrorMsg)
+      done();
+    });
 
-             Db.find.restore()
-             done()
-           })
+    it("Should return falsy value if no match found"
+      , function(done) {
 
+        sinon.stub(Db, 'find', function(done) {
+          setTimeout(function() {
+            done({})
+          }, 0)
         })
 
-    });
+         companies.findByName("not a company name", function(err, result) {
+           expect(err).to.equal(null);
+           expect(result).to.be.false;
+
+           Db.find.restore();
+           done()
+         })
+
+      })
 
   });
 
