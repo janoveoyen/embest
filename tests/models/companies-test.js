@@ -64,9 +64,9 @@ describe('Companies', function() {
         companies.addCompany(undefined, function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(badCompanyErrorMsg);
+          done();
         });
 
-        done();
       });
 
 
