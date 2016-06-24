@@ -24,12 +24,6 @@ var resetTestCompany = function() {
   }
 }
 
-var expectBadCompanyError = function(err) {
-    expect(err).to.be.instanceof(Error);
-    expect(err.message).to.equal(badCompanyErrorMsg);
-    done();
-}
-
 describe('Companies', function() {
 
   beforeEach(function() {
