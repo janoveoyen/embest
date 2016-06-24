@@ -24,15 +24,22 @@ var resetTestCompany = function() {
   }
 }
 
+
+
 describe('Companies', function() {
 
   beforeEach(function() {
         resetTestCompany();
   })
 
+
+
   describe("addCompany()", function() {
 
+
+
     describe("Validation", function() {
+
 
       it('should return Error if no company', function(done) {
 
@@ -53,6 +60,7 @@ describe('Companies', function() {
 
         done();
       });
+
 
       it('should return Error if bad company.orgNumber', function(done) {
         testCompany.orgNumber = null;
@@ -88,6 +96,7 @@ describe('Companies', function() {
         done();
       });
 
+
       it('should return Error if bad company.name', function(done) {
         testCompany.name = null;
         companies.addCompany(testCompany, function(err) {
@@ -109,6 +118,7 @@ describe('Companies', function() {
 
         done();
       });
+
 
       it('should return Error if bad company.salesPerson', function(done) {
         testCompany.salesPerson = null;
@@ -150,6 +160,7 @@ describe('Companies', function() {
         done();
       });
 
+
       it('should return Error if bad company.phone exists', function(done) {
 
         testCompany.phone = null;
@@ -185,6 +196,7 @@ describe('Companies', function() {
         done();
       });
 
+
       it('should return Error if bad company.email exists', function(done) {
 
         testCompany.email = undefined;
@@ -213,6 +225,7 @@ describe('Companies', function() {
 
         done();
       });
+
 
       it ('should return Error if bad mailingAddress exists', function(done) {
 
@@ -251,7 +264,10 @@ describe('Companies', function() {
 
     });
 
+
+
     describe("Adding company", function() {
+
 
       it("Should save the correct company to the correct collection"
         , function(done) {
@@ -285,6 +301,7 @@ describe('Companies', function() {
 
       })
 
+
       it("Should return error on inserting existing company (by orgNr)"
         , function(done) {
 
@@ -313,7 +330,10 @@ describe('Companies', function() {
 
     })
 
+
+
   describe("findByName()", function() {
+
 
     it('should return Error if null search string', function(done) {
 
@@ -325,6 +345,7 @@ describe('Companies', function() {
 
     });
 
+
     it('should return Error if empty search string', function(done) {
 
       companies.findByName("", function(err) {
@@ -334,6 +355,7 @@ describe('Companies', function() {
       });
 
     });
+
 
     it('should return Error if undefined search string', function(done) {
 
@@ -372,6 +394,7 @@ describe('Companies', function() {
       })
 
     })
+
 
     it("Should return correct company on match", function(done) {
 
