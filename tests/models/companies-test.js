@@ -341,7 +341,7 @@ describe('Companies', function() {
       done();
     });
 
-    it("Should return falsy value if no match found", function(done) {
+    it("Should return empty array if no match found", function(done) {
 
       var find = sinon.stub(Db, 'find', function(collection, projection, done) {
         setTimeout(function() {
