@@ -41,18 +41,26 @@ describe('Companies', function() {
     describe("Validation", function() {
 
 
-      it('should return Error if no company', function(done) {
-
+      it('should return Error if null company', function(done) {
         companies.addCompany(null, function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(badCompanyErrorMsg);
+          done();
         });
 
+      });
+
+
+      it('should return Error if empty company', function(done) {
         companies.addCompany("", function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(badCompanyErrorMsg);
+          done();
         });
+      });
 
+
+      it('should return Error if undefined company', function(done) {
         companies.addCompany(undefined, function(err) {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal(badCompanyErrorMsg);
