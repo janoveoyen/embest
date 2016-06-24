@@ -321,24 +321,34 @@ describe('Companies', function() {
 
   describe("findByName()", function() {
 
-    it('should return Error if no search string', function(done) {
+    it('should return Error if null search string', function(done) {
 
       companies.findByName(null, function(err) {
         expect(err).to.be.instanceof(Error);
         expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
       });
+
+    });
+
+    it('should return Error if empty search string', function(done) {
 
       companies.findByName("", function(err) {
         expect(err).to.be.instanceof(Error);
         expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
       });
+
+    });
+
+    it('should return Error if undefined search string', function(done) {
 
       companies.findByName(undefined, function(err) {
         expect(err).to.be.instanceof(Error);
         expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
       });
 
-      done();
     });
 
     it("Should return empty array if no match found", function(done) {
