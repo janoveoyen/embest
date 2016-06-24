@@ -2,6 +2,8 @@ var Db = require('./../helpers/database')
 var Validator = require('validator');
 
 const collection = 'companies';
+const minSearchStringLength = 3;
+
 const badCompanyErrorMsg = 'Ugyldig firmainformasjon oppgitt';
 const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
 const noSearchStringErrorMsg = "Ugyldig søkefrase oppgitt";
@@ -129,7 +131,7 @@ Companies.prototype.addCompany = function(company, done) {
 };
 
 Companies.prototype.findByName = function(searchString, done) {
-  if ( !isString(searchString) ) {
+  if ( !isString(searchString) || searchString.length < minSearchStringLength) {
     return done(new Error(noSearchStringErrorMsg));
   }
 

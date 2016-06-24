@@ -351,6 +351,16 @@ describe('Companies', function() {
 
     });
 
+
+    it('should return Error if search string length < 3', function(done) {
+      companies.findByName("ab", function(err, result) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
+      });
+    });
+
+
     it("Should return empty array if no match found", function(done) {
 
       var find = sinon.stub(Db, 'find', function(collection, query, done) {
