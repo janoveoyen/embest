@@ -343,7 +343,7 @@ describe('Companies', function() {
 
     it("Should return empty array if no match found", function(done) {
 
-      var find = sinon.stub(Db, 'find', function(collection, projection, done) {
+      var find = sinon.stub(Db, 'find', function(collection, query, done) {
         setTimeout(function() {
           done(null, []);
         }, 0)
@@ -361,7 +361,7 @@ describe('Companies', function() {
 
     it("Should return correct company on match", function(done) {
 
-      var find = sinon.stub(Db, 'find', function(collection, projection, done) {
+      var find = sinon.stub(Db, 'find', function(collection, query, done) {
         setTimeout(function() {
           done(null, [testCompany])
         }, 0)
