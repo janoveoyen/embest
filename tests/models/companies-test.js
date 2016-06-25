@@ -422,6 +422,35 @@ describe('Companies', function() {
 
     })
 
+
+    it("Should return correct companies on multiple matches", function(done) {
+
+      var newTestCompany = {
+          orgNumber: "999777888",
+          name: "Testfirma 2 AS",
+          salesPerson: "Kari Testselger",
+          phone: "99776622",
+          email: "post2@testfirma.as",
+          mailingAddress: "Portveien 3, 0123 Oslo"
+        }
+
+      var find = sinon.stub(Db, 'find', function(collection, query, done) {
+        setTimeout(function() {
+          done(null, [newTestCompany, testCompany])
+        }, 0)
+      })
+
+      companies.findByName("Testfirma", function(err, result) {
+        expect(err).to.equal(null);
+        sinon.assert.calledWith(find, "companies", {name: "Testfirma"});
+        expect(result[0]).to.equal(newTestCompany);
+        expect(result[1]).to.equal(testCompany);
+        Db.find.restore();
+        done()
+      })
+
+    })
+
   });
 
 });
