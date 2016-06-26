@@ -468,4 +468,109 @@ describe('Companies', function() {
 
   });
 
+
+
+  describe("findOneByOrgNumber()", function() {
+
+
+    it('should return Error if null search string', function(done) {
+
+      companies.findOneByOrgNumber(null, function(err) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
+      });
+
+    });
+
+
+    it('should return Error if empty search string', function(done) {
+
+      companies.findOneByOrgNumber("", function(err) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
+      });
+
+    });
+
+
+    it('should return Error if undefined search string', function(done) {
+
+      companies.findOneByOrgNumber(undefined, function(err) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
+      });
+
+    });
+
+
+    it('should return Error if search string length < 9', function(done) {
+      companies.findOneByOrgNumber("99988877", function(err, result) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
+      });
+    });
+
+
+    it('should return Error if orgNumber not a number', function(done) {
+      companies.findOneByOrgNumber("99988877a", function(err, result) {
+        expect(err).to.be.instanceof(Error);
+        expect(err.message).to.equal(noSearchStringErrorMsg);
+        done();
+      });
+    });
+
+
+    it("Should return empty array if no match found", function(done) {
+
+      var find = sinon.stub(Db, 'find', function(collection, query, done) {
+        setTimeout(function() {
+          done(null, []);
+        }, 0)
+      })
+
+      companies.findOneByOrgNumber("999888777", function(err, result) {
+        expect(err).to.equal(null);
+        expect(result.length).to.equal(0);
+
+        sinon.assert.calledWith(find,
+          "companies",
+          {orgNumber: "999888777"}
+        );
+
+        Db.find.restore();
+        done()
+      })
+
+    })
+
+
+    it("Should return correct company on match", function(done) {
+
+      var find = sinon.stub(Db, 'find', function(collection, query, done) {
+        setTimeout(function() {
+          done(null, [testCompany])
+        }, 0)
+      })
+
+        companies.findOneByOrgNumber("999888777", function(err, result) {
+          expect(err).to.equal(null);
+
+          sinon.assert.calledWith( find,
+            "companies",
+            {orgNumber: "999888777"}
+          );
+
+          expect(result[0]).to.equal(testCompany);
+          Db.find.restore();
+          done()
+        })
+
+    })
+
+  })
+
 });

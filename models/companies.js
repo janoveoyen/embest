@@ -141,4 +141,15 @@ Companies.prototype.findByName = function(searchString, done) {
 
 }
 
+Companies.prototype.findOneByOrgNumber = function(searchString, done) {
+  if ( !isOrgNumberValid(searchString) ) {
+    return done(new Error(noSearchStringErrorMsg));
+  }
+
+  Db.find( collection, {orgNumber: searchString}, function(err, result) {
+    return done(err, result);
+  });
+
+}
+
 module.exports = Companies;
