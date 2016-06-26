@@ -396,7 +396,12 @@ describe('Companies', function() {
       companies.findByName("not a name", function(err, result) {
         expect(err).to.equal(null);
         expect(result.length).to.equal(0);
-        sinon.assert.calledWith(find, "companies", {name: "not a name"});
+
+        sinon.assert.calledWith(find,
+          "companies",
+          {name: new RegExp("not a name", "i")}
+        );
+
         Db.find.restore();
         done()
       })
@@ -414,7 +419,12 @@ describe('Companies', function() {
 
         companies.findByName("Testfirma AS", function(err, result) {
           expect(err).to.equal(null);
-          sinon.assert.calledWith(find, "companies", {name: "Testfirma AS"});
+
+          sinon.assert.calledWith( find,
+            "companies",
+            {name: new RegExp("Testfirma AS", "i")}
+          );
+
           expect(result[0]).to.equal(testCompany);
           Db.find.restore();
           done()
@@ -442,7 +452,12 @@ describe('Companies', function() {
 
       companies.findByName("Testfirma", function(err, result) {
         expect(err).to.equal(null);
-        sinon.assert.calledWith(find, "companies", {name: "Testfirma"});
+
+        sinon.assert.calledWith( find,
+          "companies",
+          {name: new RegExp("Testfirma", "i")}
+        );
+
         expect(result[0]).to.equal(newTestCompany);
         expect(result[1]).to.equal(testCompany);
         Db.find.restore();
