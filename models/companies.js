@@ -103,57 +103,59 @@ var isMailingAddressValidIfPresent = function(mailingAddress) {
      return true
 }
 
-Companies.prototype.addCompany = function(company, done) {
-  //validate input
-  if (
-       !company
-       || !isOrgNumberValid(company.orgNumber)
-       || !isCompanyNameValid(company.name)
-       || !isSalesPersonValid(company.salesPerson)
-       || !isPhoneValidIfPresent(company.phone)
-       || !isEmailValidIfPresent(company.email)
-       || !isMailingAddressValidIfPresent(company.mailingAddress)
-    )
-  {
-    return done(new Error(badCompanyErrorMsg));
-  }
 
-  Db.insertOne(collection, company, function(err, result) {
+module.exports = {
 
-    if (err) {
-      return done(new Error(companyAlreadyExistsErrorMsg));
+  addCompany: function(company, done) {
+    //validate input
+    if (
+         !company
+         || !isOrgNumberValid(company.orgNumber)
+         || !isCompanyNameValid(company.name)
+         || !isSalesPersonValid(company.salesPerson)
+         || !isPhoneValidIfPresent(company.phone)
+         || !isEmailValidIfPresent(company.email)
+         || !isMailingAddressValidIfPresent(company.mailingAddress)
+      )
+    {
+      return done(new Error(badCompanyErrorMsg));
     }
 
-    return done(null);
+    Db.insertOne(collection, company, function(err, result) {
 
-  })
+      if (err) {
+        return done(new Error(companyAlreadyExistsErrorMsg));
+      }
 
-};
+      return done(null);
 
-Companies.prototype.findByName = function(searchString, done) {
-  if ( !isString(searchString) || searchString.length < minSearchStringLength) {
-    return done(new Error(noSearchStringErrorMsg));
-  }
+    })
 
-  Db.find(
-    collection,
-    {name: new RegExp(searchString, "i") },
-    function(err, result) {
+  },
+
+  findByName: function(searchString, done) {
+    if ( !isString(searchString) || searchString.length < minSearchStringLength) {
+      return done(new Error(noSearchStringErrorMsg));
+    }
+
+    Db.find(
+      collection,
+      {name: new RegExp(searchString, "i") },
+      function(err, result) {
+        return done(err, result);
+      }
+    );
+
+  },
+
+  findOneByOrgNumber: function(searchString, done) {
+    if ( !isOrgNumberValid(searchString) ) {
+      return done(new Error(noSearchStringErrorMsg));
+    }
+
+    Db.find( collection, {orgNumber: searchString}, function(err, result) {
       return done(err, result);
-    }
-  );
-
-}
-
-Companies.prototype.findOneByOrgNumber = function(searchString, done) {
-  if ( !isOrgNumberValid(searchString) ) {
-    return done(new Error(noSearchStringErrorMsg));
+    });
   }
 
-  Db.find( collection, {orgNumber: searchString}, function(err, result) {
-    return done(err, result);
-  });
-
 }
-
-module.exports = Companies;

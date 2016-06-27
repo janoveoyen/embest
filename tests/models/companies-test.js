@@ -1,18 +1,16 @@
 var Chai = require('chai');
 var expect = Chai.expect;
 var sinon = require('sinon');
-var Companies = require('./../../models/companies');
+var companies = require('./../../models/companies');
 var Db = require('./../../helpers/database');
 
 const badCompanyErrorMsg = "Ugyldig firmainformasjon oppgitt";
 const companyAlreadyExistsErrorMsg = "Firmaet er allerede registrert";
 const noSearchStringErrorMsg = "Ugyldig søkefrase oppgitt";
 
-var companies;
 var testCompany;
 
 var resetTestCompany = function() {
-  companies = new Companies();
 
   testCompany = {
     orgNumber: "999888777",
