@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/janoveoyen/embest#readme",
   "dependencies": {
-    "body-parser": "^1.15.1",
+    "body-parser": "^1.15.2",
     "express": "^4.13.4",
     "mongodb": "^2.1.18",
     "pug": "^2.0.0-beta2",
