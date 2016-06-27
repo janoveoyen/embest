@@ -3,7 +3,14 @@ var app = require('../../app');
 var Chai = require('chai');
 var expect = Chai.expect;
 
-
+var testCompany = {
+    orgNumber: "999888777",
+    name: "Testfirma AS",
+    salesPerson: "Ola Testselger",
+    phone: "99887766",
+    email: "post@testfirma.as",
+    mailingAddress: "Portveien 2, 0123 Oslo"
+  }
 
 describe("Companies routes",function(){
 
@@ -18,15 +25,14 @@ describe("Companies routes",function(){
   });
 
 
-  it("/companies/add with valid orgNumber should return 200",function(done){
+  it("/companies/add with valid testCompany should return 200",function(done){
 
     supertest(app)
       .post("/companies/add")
-      .send({"orgNumber": "999888777"})
+      .send(testCompany)
       .expect(200)
       .end(function(err, response) {
           expect(err).to.equal(null);
-          console.log(response);
           return done();
       });
 
