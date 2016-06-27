@@ -1,7 +1,16 @@
+var companies = require('./../models/companies');
+
 module.exports = function(req, res, next){
-  if(req.body.orgNumber != undefined) {
-    return res.status(200).end('');
-  }
-  
-  return res.status(422).end('');
+
+  companies.addCompany(req.body, function(err, result) {
+    if (err) {
+      return res.status(422).end('');
+    }
+
+    else {
+      return res.status(200).end('');
+    }
+
+  });
+
 }
