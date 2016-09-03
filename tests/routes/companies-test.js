@@ -17,7 +17,8 @@ var testCompany = {
 describe("Companies routes",function(){
 
 
-  it("/companies/add without parameters should return 422", function(done){
+  it("/companies/add without parameters " +
+    "should return status 422", function(done){
 
     supertest(app)
       .post("/companies/add")
@@ -27,7 +28,8 @@ describe("Companies routes",function(){
   });
 
 
-  it("/companies/add with valid testCompany should return 200", function(done){
+  it("/companies/add with valid testCompany " +
+    "should return status 200", function(done){
 
     sinon.stub(companies, 'addCompany', function(company, done) {
       setTimeout(function() {
@@ -42,5 +44,49 @@ describe("Companies routes",function(){
       .end(done);
 
   });
+
+
+  it("/companies/findOneByOrgNumber without parameter " +
+    "should return status 422", function(done){
+
+    supertest(app)
+      .post("/companies/findOneByOrgNumber")
+      .expect(422)
+      .end(done);
+
+  });
+
+
+  it("/companies/findOneByOrgNumber with invalid orgNumber " +
+    "should return status 422", function(done){
+
+    supertest(app)
+      .post("/companies/findOneByOrgNumber")
+      .send({orgNumber: 12345678})
+      .expect(422)
+      .end(done);
+
+  });
+
+
+  it("/companies/findOneByOrgNumber with valid orgNumber " +
+    "should return 200 and empty result on nothing found", function(done){
+
+    sinon.stub(companies, 'findOneByOrgNumber', function(company, done) {
+      setTimeout(function() {
+        done(null)
+      }, 0);
+    })
+
+    supertest(app)
+      .post("/companies/findOneByOrgNumber")
+      .send({orgNumber: 999999999})
+      .expect(200)
+      .expect({})
+      .end(done);
+
+  });
+
+
 
 });
