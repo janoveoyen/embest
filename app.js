@@ -4,8 +4,8 @@ app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.post('/companies/add', require('./routes/companies'));
 
+require('./routes/companies')(app);
 
 if(!module.parent){
    app.listen(3000);
