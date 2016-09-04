@@ -31,4 +31,17 @@ module.exports = function(app) {
 
   });
 
+  app.post('/companies/findByName', function(req, res, next) {
+
+    companies.findByName(req.body.name, function(err, result) {
+      if (err) {
+        return res.status(422).end('');
+      }
+      else {
+        return res.status(200).json(result).end('');
+      }
+    })
+
+  });
+
 }

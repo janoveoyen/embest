@@ -70,7 +70,7 @@ describe("Companies routes",function(){
 
 
   it("/companies/findOneByOrgNumber with valid orgNumber " +
-    "should return 200 and empty result on nothing found", function(done){
+    "should return status 200 and no result on nothing found", function(done){
 
     sinon.stub(companies, 'findOneByOrgNumber', function(company, done) {
       setTimeout(function() {
@@ -87,7 +87,6 @@ describe("Companies routes",function(){
         companies.findOneByOrgNumber.restore();
         done();
       });
-
   });
 
 
@@ -107,7 +106,116 @@ describe("Companies routes",function(){
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(testCompany)
       .end(done);
+  });
+
+
+  it("/companies/findByName without parameter " +
+    "should return status 422", function(done){
+
+    supertest(app)
+      .post("/companies/findByName")
+      .expect(422)
+      .end(done);
 
   });
+
+
+  it("/companies/findByName with invalid parameter " +
+    "should return status 422", function(done){
+
+    supertest(app)
+      .post("/companies/findByName")
+      .send({name: "ab"})
+      .expect(422)
+      .end(done);
+
+  });
+
+
+  it("/companies/findByName with valid parameter " +
+    "should return status 200 and no result on nothing found", function(done){
+
+    var testName = "No such name";
+
+
+    sinon.stub(companies, 'findByName', function(searchString, done) {
+      setTimeout(function() {
+        done(null, [])
+      }, 0);
+    })
+
+    supertest(app)
+      .post("/companies/findByName")
+      .send({name: testName})
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect({})
+      .end( function () {
+        expect(companies.findByName.getCall(0).args[0]).to.equal(testName)
+        companies.findByName.restore();
+        done();
+      });
+  });
+
+
+    it("/companies/findByName with valid parameter " +
+      "should return status 200 and correct company on hit", function(done){
+
+      var testName = "Testfirma";
+
+
+      sinon.stub(companies, 'findByName', function(searchString, done) {
+        setTimeout(function() {
+          done(null, testCompany)
+        }, 0);
+      })
+
+      supertest(app)
+        .post("/companies/findByName")
+        .send({name: testName})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect(testCompany)
+        .end( function () {
+          expect(companies.findByName.getCall(0).args[0]).to.equal(testName)
+          companies.findByName.restore();
+          done();
+        });
+    });
+
+    it("/companies/findByName with valid parameter " +
+      "should return status 200 and array containing " +
+      "correct companies on multiple hits", function(done){
+
+      var testName = "Testfirma";
+
+      var testCompany2 = {
+          orgNumber: "999999999",
+          name: "Testfirma 2 AS",
+          salesPerson: "Kari Testselger",
+          phone: "44556677",
+          email: "post@testfirma2.as",
+          mailingAddress: "Portveien 3, 0123 Oslo"
+        }
+
+
+      sinon.stub(companies, 'findByName', function(searchString, done) {
+        setTimeout(function() {
+          done(null, [testCompany, testCompany2])
+        }, 0);
+      })
+
+      supertest(app)
+        .post("/companies/findByName")
+        .send({name: testName})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect([testCompany, testCompany2])
+        .end( function () {
+          expect(companies.findByName.getCall(0).args[0]).to.equal(testName)
+          companies.findByName.restore();
+          done();
+        });
+    });
 
 });
