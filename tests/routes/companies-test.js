@@ -20,10 +20,20 @@ describe("Companies routes",function(){
   it("/companies/add without parameters " +
     "should return status 422", function(done){
 
+    sinon.stub(companies, 'addCompany', function(company, done) {
+      setTimeout(function() {
+        done(null)
+      }, 0);
+    })
+
     supertest(app)
       .post("/companies/add")
       .expect(422)
-      .end(done);
+      .end(function () {
+        expect(companies.addCompany.getCall(0).args[0]).to.eql({});
+        companies.addCompany.restore();
+        done();
+      });
 
   });
 
@@ -41,7 +51,11 @@ describe("Companies routes",function(){
       .post("/companies/add")
       .send(testCompany)
       .expect(200)
-      .end(done);
+      .end( function () {
+        expect(companies.addCompany.getCall(0).args[0]).to.eql(testCompany)
+        companies.addCompany.restore();
+        done();
+      });
 
   });
 
@@ -49,10 +63,20 @@ describe("Companies routes",function(){
   it("/companies/findOneByOrgNumber without parameter " +
     "should return status 422", function(done){
 
+    sinon.stub(companies, 'findOneByOrgNumber', function(company, done) {
+      setTimeout(function() {
+        done(null)
+      }, 0);
+    })
+
     supertest(app)
       .post("/companies/findOneByOrgNumber")
       .expect(422)
-      .end(done);
+      .end( function () {
+        expect(companies.findOneByOrgNumber.getCall(0).args[0]).to.eql(undefined)
+        companies.findOneByOrgNumber.restore();
+        done();
+      });
 
   });
 
@@ -60,11 +84,22 @@ describe("Companies routes",function(){
   it("/companies/findOneByOrgNumber with invalid orgNumber " +
     "should return status 422", function(done){
 
+    sinon.stub(companies, 'findOneByOrgNumber', function(company, done) {
+      setTimeout(function() {
+        done(null)
+      }, 0);
+    })
+
     supertest(app)
       .post("/companies/findOneByOrgNumber")
       .send({orgNumber: 12345678})
       .expect(422)
-      .end(done);
+      .end( function () {
+        expect(companies.findOneByOrgNumber.getCall(0).args[0])
+              .to.eql(12345678)
+        companies.findOneByOrgNumber.restore();
+        done();
+      });
 
   });
 
@@ -83,7 +118,9 @@ describe("Companies routes",function(){
       .send({orgNumber: 999999999})
       .expect(200)
       .expect({})
-      .end(function () {
+      .end( function () {
+        expect(companies.findOneByOrgNumber.getCall(0).args[0])
+              .to.eql(999999999);
         companies.findOneByOrgNumber.restore();
         done();
       });
@@ -105,17 +142,32 @@ describe("Companies routes",function(){
       .expect(200)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(testCompany)
-      .end(done);
+      .end( function () {
+        expect(companies.findOneByOrgNumber.getCall(0).args[0])
+              .to.eql(999888777);
+        companies.findOneByOrgNumber.restore();
+        done();
+      });
   });
 
 
   it("/companies/findByName without parameter " +
     "should return status 422", function(done){
 
-    supertest(app)
-      .post("/companies/findByName")
-      .expect(422)
-      .end(done);
+      sinon.stub(companies, 'findByName', function(company, done) {
+        setTimeout(function() {
+          done(null)
+        }, 0);
+      })
+
+      supertest(app)
+        .post("/companies/findByName")
+        .expect(422)
+        .end( function () {
+          expect(companies.findByName.getCall(0).args[0]).to.eql(undefined)
+          companies.findByName.restore();
+          done();
+        });
 
   });
 
@@ -123,11 +175,21 @@ describe("Companies routes",function(){
   it("/companies/findByName with invalid parameter " +
     "should return status 422", function(done){
 
+    sinon.stub(companies, 'findByName', function(company, done) {
+      setTimeout(function() {
+        done(null)
+      }, 0);
+    })
+
     supertest(app)
       .post("/companies/findByName")
       .send({name: "ab"})
       .expect(422)
-      .end(done);
+      .end( function () {
+        expect(companies.findByName.getCall(0).args[0]).to.eql("ab")
+        companies.findByName.restore();
+        done();
+      });
 
   });
 
@@ -136,7 +198,6 @@ describe("Companies routes",function(){
     "should return status 200 and no result on nothing found", function(done){
 
     var testName = "No such name";
-
 
     sinon.stub(companies, 'findByName', function(searchString, done) {
       setTimeout(function() {

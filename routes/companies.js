@@ -19,7 +19,7 @@ module.exports = function(app) {
 
   app.post('/companies/findOneByOrgNumber', function(req, res, next) {
 
-    companies.findOneByOrgNumber(req.body, function(err, result) {
+    companies.findOneByOrgNumber(req.body.orgNumber, function(err, result) {
       if (err) {
         return res.status(422).end('');
       }
