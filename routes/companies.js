@@ -24,7 +24,7 @@ module.exports = function(app) {
         return res.status(422).end('');
       }
       else {
-        return res.status(200).end();
+        return res.status(200).json(result).end('');
       }
 
     });

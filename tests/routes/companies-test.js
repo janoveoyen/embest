@@ -83,10 +83,31 @@ describe("Companies routes",function(){
       .send({orgNumber: 999999999})
       .expect(200)
       .expect({})
-      .end(done);
+      .end(function () {
+        companies.findOneByOrgNumber.restore();
+        done();
+      });
 
   });
 
 
+  it("/companies/findOneByOrgNumber with valid orgNumber " +
+    "should return 200 and correct result on single hit", function(done){
+
+    sinon.stub(companies, 'findOneByOrgNumber', function(company, done) {
+      setTimeout(function() {
+        done(null, testCompany)
+      }, 0);
+    })
+
+    supertest(app)
+      .post("/companies/findOneByOrgNumber")
+      .send({orgNumber: 999888777})
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(testCompany)
+      .end(done);
+
+  });
 
 });
