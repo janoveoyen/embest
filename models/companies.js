@@ -154,7 +154,11 @@ module.exports = {
     }
 
     Db.find( collection, {orgNumber: searchString}, function(err, result) {
-      return done(err, result);
+      if (result.length > 0) {
+        return done(err, result[0]);
+      }
+
+      return done(err, null);
     });
   }
 

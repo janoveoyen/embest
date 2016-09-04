@@ -522,7 +522,7 @@ describe('Companies', function() {
     });
 
 
-    it("Should return empty array if no match found", function(done) {
+    it("Should return null if no match found", function(done) {
 
       var find = sinon.stub(Db, 'find', function(collection, query, done) {
         setTimeout(function() {
@@ -532,7 +532,7 @@ describe('Companies', function() {
 
       companies.findOneByOrgNumber("999888777", function(err, result) {
         expect(err).to.equal(null);
-        expect(result.length).to.equal(0);
+        expect(result).to.equal(null);
 
         sinon.assert.calledWith(find,
           "companies",
@@ -562,7 +562,7 @@ describe('Companies', function() {
             {orgNumber: "999888777"}
           );
 
-          expect(result[0]).to.equal(testCompany);
+          expect(result).to.equal(testCompany);
           Db.find.restore();
           done()
         })
