@@ -4,7 +4,7 @@
     "description": "Embest is a Customer Relationship Management system",
     "main": "app.js",
     "scripts": {
-        "test": "mocha tests --recursive --watch",
+        "test": "mocha components-test-setup.js tests --recursive --watch",
         "dev": "nodemon app.js"
     },
     "repository": {
@@ -34,6 +34,7 @@
         "jsdom": "^9.3.0",
         "mocha": "^2.5.3",
         "nodemon": "^1.9.2",
+        "react-addons-test-utils": "^15.0.2",
         "sinon": "^1.17.4",
         "supertest": "^1.2.0"
     }
