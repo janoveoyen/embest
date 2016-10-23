@@ -1,34 +1,33 @@
 {
-  "name": "embest",
-  "version": "1.0.0",
-  "description": "Embest is a Customer Relationship Management system",
-  "main": "app.js",
-  "scripts": {
-    "test": "mocha tests --recursive --watch",
-    "dev": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/janoveoyen/embest.git"
-  },
-  "author": "Jan Ove Øyen",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/janoveoyen/embest/issues"
-  },
-  "homepage": "https://github.com/janoveoyen/embest#readme",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.13.4",
-    "mongodb": "^2.1.18",
-    "pug": "^2.0.0-beta2",
-    "validator": "^5.4.0"
-  },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.5.3",
-    "nodemon": "^1.9.2",
-    "sinon": "^1.17.4",
-    "supertest": "^1.2.0"
-  }
+    "name": "embest",
+    "version": "1.0.0",
+    "description": "Embest is a Customer Relationship Management system",
+    "main": "app.js",
+    "scripts": {
+        "test": "mocha tests --recursive --watch",
+        "dev": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/janoveoyen/embest.git"
+    },
+    "author": "Jan Ove Øyen",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/janoveoyen/embest/issues"
+    },
+    "homepage": "https://github.com/janoveoyen/embest#readme",
+    "dependencies": {
+        "body-parser": "^1.15.2",
+        "express": "^4.13.4",
+        "mongodb": "^2.1.18",
+        "validator": "^5.4.0"
+    },
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "mocha": "^2.5.3",
+        "nodemon": "^1.9.2",
+        "sinon": "^1.17.4",
+        "supertest": "^1.2.0"
+    }
 }
