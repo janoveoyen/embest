@@ -1,5 +1,5 @@
 var supertest = require('supertest');
-var app = require('../../app');
+var app = require('../../server');
 var Chai = require('chai');
 var expect = Chai.expect;
 var sinon = require('sinon');

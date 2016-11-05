@@ -2,10 +2,10 @@
     "name": "embest",
     "version": "1.0.0",
     "description": "Embest is a Customer Relationship Management system",
-    "main": "app.js",
+    "main": "server.js",
     "scripts": {
         "test": "mocha components-test-setup.js tests --recursive --watch",
-        "dev": "nodemon app.js"
+        "dev": "nodemon server.js"
     },
     "repository": {
         "type": "git",
