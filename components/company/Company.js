@@ -7,7 +7,7 @@ module.exports = {
       <div className="company-panel">
         <h2 className='company-panel__title'>Bedriftsinformasjon</h2>
         <label className='company-panel__label' for='company-name' />
-        <input className='company-panel__input'/>
+        <input className='company-panel__input' type='text' name='company-name' />
       </div>
     );
   }

@@ -53,8 +53,9 @@ describe('Company component', function() {
 
         const input = wrapper.childAt(2);
         const expectedClass = 'company-panel__input';
+        const expectedProps = {'type': 'text', 'name': 'company-name'}
 
-        assertCorrectElement( input, 'input', expectedClass, {} );
+        assertCorrectElement( input, 'input', expectedClass, expectedProps);
 
       });
 
