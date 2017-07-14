@@ -166,6 +166,8 @@ console.log(wrapper.debug())
 
       });
 
+    it('should populate salesperson field with all possible salespersons');
+
     it('should contain a ' +
       '<div class="form__field">' +
       '<label class="form__label" for="company-phone">Telefon</label>' +
