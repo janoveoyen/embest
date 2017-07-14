@@ -16,7 +16,7 @@ describe('Company component', function() {
   describe('with no props', function() {
     wrapper = shallow(< Company / >)
     form = wrapper.childAt(1);
-console.log(wrapper.debug())
+//console.log(wrapper.debug())
 
       it('should contain a <div class="panel" />', function() {
 
